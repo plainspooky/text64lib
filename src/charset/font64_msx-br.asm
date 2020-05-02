@@ -1,4 +1,4 @@
-FONT64_MSX-BR_TILES_SIZE: equ 2048
+FONT64_TILES_SIZE: equ 2048
 
             db $00                      ; 00000000 | ░░░░░░░░   $00
             db $00                      ; 00000000 | ░░░░░░░░
@@ -2303,4 +2303,3 @@ FONT64_MSX-BR_TILES_SIZE: equ 2048
             db $ff                      ; 11111111 | ████████
             db $ff                      ; 11111111 | ████████
             db $ff                      ; 11111111 | ████████
-
