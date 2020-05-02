@@ -9,14 +9,16 @@ txt64_clear_screen:
             proc
             local __clear_loop
 
+        if USE_COLORS
             call txt64_build_attr_byte  ; build attribute byte
             ld i, a                     ; and store color in 'I'
+
+            ld de,ATTR_TABLE            ; get attribute table
+        endif
 
             ld hl,CRTCNT                ; get number of lines
             ld b,(hl)                   ; and store in 'B'
             dec b                       ; 'B' <- 'B' - 1
-
-            ld de,ATTR_TABLE            ; get attribute table
 
             ld hl,PATR_TABLE            ; get pattern table
 
@@ -27,18 +29,21 @@ txt64_clear_screen:
                 ld bc,256               ; line size (256 bytes)
                 call FILVRM             ; fill VRAM
 
+            if USE_COLORS
                 ld a,i                  ; 'A' <- 'I'
                 ex de,hl                ; swap 'DE' <-> 'HL'
 
                 ld bc,256               ; line size (256 bytes)
                 call FILVRM             ; fill VRAM
 
-                inc h                   ; 'HL' <- 'HL' + 256
+                ex de,hl                ; swap 'DE' <-> 'HL' again
                 inc d                   ; 'DE' <- 'DE' + 256
+            endif
 
+                inc h                   ; 'HL' <- 'HL' + 256
                 pop bc                  ; restore 'BC'
 
-                djnz __clear_loop       ; while 'B' > 0
+                djnz __clear_loop
 
             ld a,1                      ; 'A' <- 1
             ld (CSRY),a                 ; Current line <- = 'A'
